@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react";
+import { useState } from "react";
 
 const initialFriends = [
   {
@@ -22,13 +22,29 @@ const initialFriends = [
   },
 ];
 
-export default function App() {
+function Button({ children, onClick }) {
+  return (
+    <button className="button" onClick={onClick}>
+      {children}
+    </button>
+  );
+}
+
+function App() {
+  const [showAddFriend, setShowAddFriend] = useState(false);
+
+  function handleShowAddFriend() {
+    setShowAddFriend((show) => !show);
+  }
+
   return (
     <div className="app">
       <div className="sidebar">
         <FriendsList />
-        <FormAddFriend />
-        <Button>Add Friend</Button>
+        {showAddFriend && <FormAddFriend />}
+        <Button onClick={handleShowAddFriend}>
+          {showAddFriend ? "Close" : "Add Friend"}
+        </Button>
       </div>
       <FormSplitBill />
     </div>
@@ -84,10 +100,6 @@ function FormAddFriend() {
   );
 }
 
-function Button({ children }) {
-  return <button className="button">{children}</button>;
-}
-
 function FormSplitBill() {
   return (
     <form className="form-split-bill">
@@ -112,3 +124,5 @@ function FormSplitBill() {
     </form>
   );
 }
+
+export default App;
